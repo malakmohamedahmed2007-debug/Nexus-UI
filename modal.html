@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NEXUS UI — Modal</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<div class="bg-gradient-mesh"></div>
+<canvas id="particle-canvas"></canvas>
+
+<div class="page-wrapper">
+
+  <!-- ── Navbar ── -->
+  <nav class="navbar">
+    <a href="index.html" class="nav-logo">
+      <span class="nav-logo-dot"></span>NEXUS
+    </a>
+    <button class="nav-hamburger" id="hamburger">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="modal.html" class="active">Modal</a></li>
+      <li><a href="todo.html">To-Do</a></li>
+      <li><a href="table.html">Table</a></li>
+    </ul>
+  </nav>
+
+  <!-- ── Page Header ── -->
+  <div class="page-header page-enter">
+    <p class="section-label">// Component 01</p>
+    <h1 class="section-title">Modal <span>System</span></h1>
+    <p style="color:var(--text-secondary);font-size:.9rem;margin-top:.75rem;max-width:440px;margin-inline:auto;">
+      Click any trigger below to experience spring-physics popups with overlay blur and glow effects.
+    </p>
+  </div>
+
+  <!-- ── Main Content ── -->
+  <div class="modal-page-content page-enter stagger-2">
+
+    <div class="modal-demo-area">
+
+      <!-- Left: Code Panel -->
+      <div class="code-panel">
+        <div class="code-panel-header">
+          <div class="code-dots">
+            <div class="code-dot dot-red"></div>
+            <div class="code-dot dot-yellow"></div>
+            <div class="code-dot dot-green"></div>
+          </div>
+          <span class="code-filename">modal.js</span>
+        </div>
+        <div class="code-body"><span class="code-comment">// Open modal with type</span>
+<span class="code-keyword">function</span> <span class="code-fn">openModal</span>(type) {
+  <span class="code-keyword">const</span> overlay =
+    document.<span class="code-fn">getElementById</span>(
+      <span class="code-string">'modal-overlay'</span>
+    );
+
+  <span class="code-fn">applyContent</span>(type);
+  overlay.classList.<span class="code-fn">add</span>(
+    <span class="code-string">'active'</span>
+  );
+  <span class="code-fn">playModalOpen</span>();
+}
+
+<span class="code-comment">// Close with animation</span>
+<span class="code-keyword">function</span> <span class="code-fn">closeModal</span>() {
+  modalBox.classList.<span class="code-fn">add</span>(
+    <span class="code-string">'closing'</span>
+  );
+  <span class="code-fn">setTimeout</span>(() => {
+    overlay.classList
+      .<span class="code-fn">remove</span>(<span class="code-string">'active'</span>);
+    modalBox.classList
+      .<span class="code-fn">remove</span>(<span class="code-string">'closing'</span>);
+  }, <span class="code-num">300</span>);
+}
+        </div>
+      </div>
+
+      <!-- Right: Controls -->
+      <div class="demo-controls-panel">
+        <div>
+          <h3>&#10021; Modal Triggers</h3>
+          <p>Each modal variant has a distinct personality — from success confirmations to warning gates and info panels.</p>
+        </div>
+
+        <div class="demo-btn-group">
+          <button class="btn btn-primary" onclick="openModal('info')">
+            &#9432; Info Modal
+          </button>
+          <button class="btn btn-success" onclick="openModal('success')">
+            &#10003; Success Modal
+          </button>
+          <button class="btn btn-purple" onclick="openModal('warning')">
+            &#9888; Warning Modal
+          </button>
+          <button class="btn btn-danger" onclick="openModal('danger')">
+            &#9888; Danger Modal
+          </button>
+        </div>
+
+        <div style="padding-top:.5rem;border-top:1px solid var(--border);">
+          <p style="font-size:.8rem;color:var(--text-muted);font-family:var(--font-mono);">
+            &#10095; Click outside to dismiss<br>
+            &#10095; Spring-physics close animation<br>
+            &#10095; Sound feedback on open/close
+          </p>
+        </div>
+      </div>
+
+    </div><!-- /demo-area -->
+
+    <!-- Stats row -->
+    <div style="display:flex;gap:1rem;margin-top:1.5rem;flex-wrap:wrap;width:100%;max-width:900px;">
+      <div class="glass" style="flex:1;padding:1.2rem 1.5rem;min-width:180px;">
+        <div style="font-family:var(--font-display);font-size:1.8rem;font-weight:700;color:var(--cyan);" id="modal-open-count">0</div>
+        <div style="font-size:.72rem;color:var(--text-muted);font-family:var(--font-mono);letter-spacing:.12em;text-transform:uppercase;margin-top:.3rem;">Modals Opened</div>
+      </div>
+      <div class="glass" style="flex:1;padding:1.2rem 1.5rem;min-width:180px;">
+        <div style="font-family:var(--font-display);font-size:1.8rem;font-weight:700;color:var(--purple);" id="last-modal-type">—</div>
+        <div style="font-size:.72rem;color:var(--text-muted);font-family:var(--font-mono);letter-spacing:.12em;text-transform:uppercase;margin-top:.3rem;">Last Type</div>
+      </div>
+      <div class="glass" style="flex:1;padding:1.2rem 1.5rem;min-width:180px;">
+        <div style="font-family:var(--font-display);font-size:1.8rem;font-weight:700;color:var(--neon);" id="last-action">—</div>
+        <div style="font-size:.72rem;color:var(--text-muted);font-family:var(--font-mono);letter-spacing:.12em;text-transform:uppercase;margin-top:.3rem;">Last Action</div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+
+  <!-- ── Footer ── -->
+  <footer class="footer">
+    <span class="footer-logo">NEXUS</span>
+    <span class="footer-text">// Modal Component</span>
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="todo.html">Todo</a>
+      <a href="table.html">Table</a>
+    </div>
+  </footer>
+
+</div><!-- /page-wrapper -->
+
+<!-- ── THE MODAL ── -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal-backdrop" id="modal-backdrop"></div>
+  <div class="modal-box" id="modal-box">
+    <!-- Top glow line via CSS ::before -->
+    <div class="modal-box-header">
+      <div class="modal-icon" id="modal-icon">&#9432;</div>
+      <div class="modal-title-block">
+        <h2 id="modal-title">Modal Title</h2>
+        <p id="modal-subtitle">Modal subtitle goes here.</p>
+      </div>
+      <button class="modal-close" id="modal-close" aria-label="Close">&#10005;</button>
+    </div>
+    <div class="modal-body">
+      <p id="modal-body-text">Modal body content.</p>
+      <div class="highlight-box" id="modal-code-box" style="display:none;">
+        <span id="modal-code-content"></span>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary btn-sm" id="modal-cancel-btn" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary btn-sm"  id="modal-confirm-btn">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/modal.js"></script>
+<script>
+/* ── Particles ── */
+(function(){
+  const canvas = document.getElementById('particle-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [];
+  function resize(){ W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+  window.addEventListener('resize', resize); resize();
+  const COLORS = ['rgba(0,210,255,', 'rgba(168,85,247,', 'rgba(74,247,193,'];
+  for(let i = 0; i < 70; i++){
+    particles.push({
+      x: Math.random() * 9999, y: Math.random() * 9999,
+      r: Math.random() * 1.5 + 0.3,
+      vx: (Math.random() - 0.5) * 0.18,
+      vy: (Math.random() - 0.5) * 0.18,
+      color: COLORS[Math.floor(Math.random() * COLORS.length)],
+      alpha: Math.random() * 0.6 + 0.15,
+    });
+  }
+  function draw(){
+    ctx.clearRect(0, 0, W, H);
+    particles.forEach(p => {
+      p.x += p.vx; p.y += p.vy;
+      if(p.x < 0) p.x = W; if(p.x > W) p.x = 0;
+      if(p.y < 0) p.y = H; if(p.y > H) p.y = 0;
+      ctx.beginPath();
+      ctx.arc(p.x % W, p.y % H, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = p.color + p.alpha + ')';
+      ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ── Hamburger ── */
+const hamburger = document.getElementById('hamburger');
+const navLinks  = document.getElementById('nav-links');
+hamburger.addEventListener('click', () => {
+  hamburger.classList.toggle('open');
+  navLinks.classList.toggle('open');
+});
+</script>
+</body>
+</html>

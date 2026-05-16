@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NEXUS UI — Home</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<!-- Background layers -->
+<div class="bg-gradient-mesh"></div>
+<canvas id="particle-canvas"></canvas>
+
+<div class="page-wrapper">
+
+  <!-- ── Navbar ── -->
+  <nav class="navbar">
+    <a href="index.html" class="nav-logo">
+      <span class="nav-logo-dot"></span>
+      NEXUS
+    </a>
+    <button class="nav-hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="index.html" class="active">Home</a></li>
+      <li><a href="modal.html">Modal</a></li>
+      <li><a href="todo.html">To-Do</a></li>
+      <li><a href="table.html">Table</a></li>
+    </ul>
+  </nav>
+
+  <!-- ── Hero ── -->
+  <section class="hero">
+    <p class="hero-eyebrow">Frontend UI Showcase</p>
+
+    <h1 class="hero-title">
+      <span class="line-1">Build Without</span>
+      <span class="line-2">Limits</span>
+    </h1>
+
+    <p class="hero-subtitle">
+      A premium collection of hand-crafted UI components — modals, task managers,
+      and dynamic data tables — built with pure HTML, CSS, and JavaScript.
+    </p>
+
+    <div class="hero-actions">
+      <a href="modal.html" class="btn btn-primary">
+        <span>&#9654;</span> Explore Projects
+      </a>
+      <a href="table.html" class="btn btn-secondary">
+        View Table
+      </a>
+    </div>
+
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-num" id="counter-pages">0</div>
+        <div class="hero-stat-label">Pages</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num" id="counter-comp">0</div>
+        <div class="hero-stat-label">Components</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num" id="counter-lines">0</div>
+        <div class="hero-stat-label">Lines of Code</div>
+      </div>
+    </div>
+
+    <div class="scroll-hint">
+      <div class="scroll-mouse"></div>
+      <span>Scroll</span>
+    </div>
+  </section>
+
+  <!-- ── Feature Cards ── -->
+  <section class="features">
+    <div class="features-header page-enter stagger-1">
+      <p class="section-label">// Projects</p>
+      <h2 class="section-title">What's <span>Inside</span></h2>
+    </div>
+
+    <div class="features-grid">
+
+      <!-- Card 1 – Modal -->
+      <div class="feature-card page-enter stagger-1">
+        <span class="feature-card-num">01</span>
+        <div class="feature-icon icon-cyan">&#10021;</div>
+        <h3>Modal / Popup</h3>
+        <p>
+          A beautifully animated modal system with overlay blur, glow effects,
+          spring-physics popup, and multiple trigger types — success, warning, info.
+        </p>
+        <div class="feature-tags">
+          <span class="feature-tag">glassmorphism</span>
+          <span class="feature-tag">animations</span>
+          <span class="feature-tag">overlay</span>
+        </div>
+        <a href="modal.html" class="btn btn-secondary btn-sm" onclick="playClick()">
+          Open Page &#8594;
+        </a>
+      </div>
+
+      <!-- Card 2 – Todo -->
+      <div class="feature-card purple-hover page-enter stagger-2">
+        <span class="feature-card-num">02</span>
+        <div class="feature-icon icon-purple">&#10003;</div>
+        <h3>To-Do CRUD App</h3>
+        <p>
+          A fully-featured task manager with add, edit, delete, filter by status,
+          animated counters, localStorage persistence, and a delete confirmation popup.
+        </p>
+        <div class="feature-tags">
+          <span class="feature-tag">CRUD</span>
+          <span class="feature-tag">localStorage</span>
+          <span class="feature-tag">animations</span>
+        </div>
+        <a href="todo.html" class="btn btn-secondary btn-sm" onclick="playClick()">
+          Open Page &#8594;
+        </a>
+      </div>
+
+      <!-- Card 3 – Table -->
+      <div class="feature-card neon-hover page-enter stagger-3">
+        <span class="feature-card-num">03</span>
+        <div class="feature-icon icon-neon">&#9776;</div>
+        <h3>Dynamic Table</h3>
+        <p>
+          A data table with live search, sortable columns, colored status badges,
+          animated row entry, row-add form, and export UI — all in plain JavaScript.
+        </p>
+        <div class="feature-tags">
+          <span class="feature-tag">sorting</span>
+          <span class="feature-tag">filtering</span>
+          <span class="feature-tag">dynamic rows</span>
+        </div>
+        <a href="table.html" class="btn btn-secondary btn-sm" onclick="playClick()">
+          Open Page &#8594;
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── Footer ── -->
+  <footer class="footer">
+    <span class="footer-logo">NEXUS</span>
+    <span class="footer-text">// Pure HTML · CSS · JS — No Frameworks</span>
+    <div class="footer-links">
+      <a href="modal.html">Modal</a>
+      <a href="todo.html">Todo</a>
+      <a href="table.html">Table</a>
+    </div>
+  </footer>
+
+</div><!-- /page-wrapper -->
+
+<script>
+/* ── Particles ── */
+(function(){
+  const canvas = document.getElementById('particle-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [];
+
+  function resize(){ W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+  window.addEventListener('resize', resize); resize();
+
+  const COLORS = ['rgba(0,210,255,', 'rgba(168,85,247,', 'rgba(74,247,193,'];
+  for(let i = 0; i < 70; i++){
+    particles.push({
+      x: Math.random() * 9999, y: Math.random() * 9999,
+      r: Math.random() * 1.5 + 0.3,
+      vx: (Math.random() - 0.5) * 0.18,
+      vy: (Math.random() - 0.5) * 0.18,
+      color: COLORS[Math.floor(Math.random() * COLORS.length)],
+      alpha: Math.random() * 0.6 + 0.15,
+    });
+  }
+
+  function draw(){
+    ctx.clearRect(0, 0, W, H);
+    particles.forEach(p => {
+      p.x += p.vx; p.y += p.vy;
+      if(p.x < 0) p.x = W; if(p.x > W) p.x = 0;
+      if(p.y < 0) p.y = H; if(p.y > H) p.y = 0;
+      ctx.beginPath();
+      ctx.arc(p.x % W, p.y % H, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = p.color + p.alpha + ')';
+      ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ── Navbar Hamburger ── */
+const hamburger = document.getElementById('hamburger');
+const navLinks  = document.getElementById('nav-links');
+hamburger.addEventListener('click', () => {
+  hamburger.classList.toggle('open');
+  navLinks.classList.toggle('open');
+  playClick();
+});
+
+/* ── Sound Effects (Web Audio API) ── */
+const AudioCtx = window.AudioContext || window.webkitAudioContext;
+let audioCtx;
+
+function getCtx(){
+  if(!audioCtx) audioCtx = new AudioCtx();
+  return audioCtx;
+}
+
+function playClick(){
+  try {
+    const ac = getCtx();
+    const osc = ac.createOscillator();
+    const gain = ac.createGain();
+    osc.connect(gain); gain.connect(ac.destination);
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(880, ac.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(440, ac.currentTime + 0.08);
+    gain.gain.setValueAtTime(0.12, ac.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 0.15);
+    osc.start(); osc.stop(ac.currentTime + 0.15);
+  } catch(e){}
+}
+
+/* Attach click sound to all buttons on page */
+document.querySelectorAll('.btn, .nav-links a').forEach(el => {
+  el.addEventListener('click', playClick);
+});
+
+/* ── Animated Counters ── */
+function animateCounter(el, target, suffix, duration = 1600){
+  let start = null;
+  const step = ts => {
+    if(!start) start = ts;
+    const progress = Math.min((ts - start) / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    el.textContent = Math.floor(eased * target) + (suffix || '');
+    if(progress < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    animateCounter(document.getElementById('counter-pages'), 4);
+    animateCounter(document.getElementById('counter-comp'), 12);
+    animateCounter(document.getElementById('counter-lines'), 1800, '+');
+  }, 800);
+});
+
+/* ── IntersectionObserver for stagger cards ── */
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.style.opacity = '1'; });
+}, { threshold: 0.1 });
+document.querySelectorAll('.page-enter').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

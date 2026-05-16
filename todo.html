@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NEXUS UI — To-Do</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<div class="bg-gradient-mesh"></div>
+<canvas id="particle-canvas"></canvas>
+
+<div class="page-wrapper">
+
+  <!-- ── Navbar ── -->
+  <nav class="navbar">
+    <a href="index.html" class="nav-logo">
+      <span class="nav-logo-dot"></span>NEXUS
+    </a>
+    <button class="nav-hamburger" id="hamburger">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="modal.html">Modal</a></li>
+      <li><a href="todo.html" class="active">To-Do</a></li>
+      <li><a href="table.html">Table</a></li>
+    </ul>
+  </nav>
+
+  <!-- ── Page Header ── -->
+  <div class="page-header page-enter">
+    <p class="section-label">// Component 02</p>
+    <h1 class="section-title">Task <span>Manager</span></h1>
+    <p style="color:var(--text-secondary);font-size:.9rem;margin-top:.75rem;max-width:440px;margin-inline:auto;">
+      Full CRUD with localStorage persistence, animated counters, and delete confirmation.
+    </p>
+  </div>
+
+  <!-- ── Todo Content ── -->
+  <div class="todo-page-content page-enter stagger-2">
+
+    <!-- Stats bar -->
+    <div class="todo-stats-bar">
+      <div class="todo-stat-card stat-total">
+        <div class="todo-stat-num" id="stat-total">0</div>
+        <div class="todo-stat-label">Total</div>
+      </div>
+      <div class="todo-stat-card stat-done">
+        <div class="todo-stat-num" id="stat-done">0</div>
+        <div class="todo-stat-label">Done</div>
+      </div>
+      <div class="todo-stat-card stat-pending">
+        <div class="todo-stat-num" id="stat-pending">0</div>
+        <div class="todo-stat-label">Pending</div>
+      </div>
+    </div>
+
+    <!-- Input area -->
+    <div class="todo-input-area">
+      <div class="todo-input-wrap">
+        <span class="todo-input-icon">&#43;</span>
+        <input
+          type="text"
+          id="todo-input"
+          class="input-field"
+          placeholder="Add a new task and press Enter or click Add..."
+          maxlength="140"
+          autocomplete="off"
+        />
+      </div>
+      <button class="btn btn-primary" id="add-btn">Add</button>
+    </div>
+
+    <!-- Filters -->
+    <div class="todo-filters">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="pending">Pending</button>
+      <button class="filter-btn" data-filter="completed">Completed</button>
+    </div>
+
+    <!-- Task list -->
+    <div class="todo-list" id="todo-list">
+      <!-- Tasks injected by JS -->
+    </div>
+
+  </div><!-- /todo-content -->
+
+  <!-- ── Footer ── -->
+  <footer class="footer">
+    <span class="footer-logo">NEXUS</span>
+    <span class="footer-text">// Tasks saved to localStorage</span>
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="modal.html">Modal</a>
+      <a href="table.html">Table</a>
+    </div>
+  </footer>
+
+</div><!-- /page-wrapper -->
+
+<!-- ── Delete Confirm Popup ── -->
+<div class="confirm-popup" id="confirm-popup">
+  <h4>&#9888; Delete Task?</h4>
+  <p id="confirm-text">This task will be permanently removed.</p>
+  <div class="confirm-actions">
+    <button class="btn btn-secondary btn-sm" id="confirm-cancel">Keep it</button>
+    <button class="btn btn-danger btn-sm"    id="confirm-delete">Delete</button>
+  </div>
+</div>
+
+<script src="js/todo.js"></script>
+<script>
+/* ── Particles ── */
+(function(){
+  const canvas = document.getElementById('particle-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [];
+  function resize(){ W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+  window.addEventListener('resize', resize); resize();
+  const COLORS = ['rgba(0,210,255,', 'rgba(168,85,247,', 'rgba(74,247,193,'];
+  for(let i = 0; i < 70; i++){
+    particles.push({
+      x: Math.random() * 9999, y: Math.random() * 9999,
+      r: Math.random() * 1.5 + 0.3,
+      vx: (Math.random() - 0.5) * 0.18,
+      vy: (Math.random() - 0.5) * 0.18,
+      color: COLORS[Math.floor(Math.random() * COLORS.length)],
+      alpha: Math.random() * 0.6 + 0.15,
+    });
+  }
+  function draw(){
+    ctx.clearRect(0, 0, W, H);
+    particles.forEach(p => {
+      p.x += p.vx; p.y += p.vy;
+      if(p.x < 0) p.x = W; if(p.x > W) p.x = 0;
+      if(p.y < 0) p.y = H; if(p.y > H) p.y = 0;
+      ctx.beginPath();
+      ctx.arc(p.x % W, p.y % H, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = p.color + p.alpha + ')';
+      ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ── Hamburger ── */
+const hamburger = document.getElementById('hamburger');
+const navLinks  = document.getElementById('nav-links');
+hamburger.addEventListener('click', () => {
+  hamburger.classList.toggle('open');
+  navLinks.classList.toggle('open');
+});
+</script>
+</body>
+</html>

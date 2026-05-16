@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NEXUS UI — Table</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<div class="bg-gradient-mesh"></div>
+<canvas id="particle-canvas"></canvas>
+
+<div class="page-wrapper">
+
+  <!-- ── Navbar ── -->
+  <nav class="navbar">
+    <a href="index.html" class="nav-logo">
+      <span class="nav-logo-dot"></span>NEXUS
+    </a>
+    <button class="nav-hamburger" id="hamburger">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="modal.html">Modal</a></li>
+      <li><a href="todo.html">To-Do</a></li>
+      <li><a href="table.html" class="active">Table</a></li>
+    </ul>
+  </nav>
+
+  <!-- ── Page Header ── -->
+  <div class="page-header page-enter">
+    <p class="section-label">// Component 03</p>
+    <h1 class="section-title">Dynamic <span>Table</span></h1>
+    <p style="color:var(--text-secondary);font-size:.9rem;margin-top:.75rem;max-width:480px;margin-inline:auto;">
+      Live search, sortable columns, status badges, row animations, and add/export controls — no library required.
+    </p>
+  </div>
+
+  <!-- ── Table Content ── -->
+  <div class="table-page-content page-enter stagger-2">
+
+    <!-- Controls -->
+    <div class="table-controls">
+      <div class="table-search-wrap">
+        <span class="table-search-icon">&#128269;</span>
+        <input
+          type="text"
+          id="table-search"
+          class="input-field"
+          placeholder="Search by name, role, or department..."
+          autocomplete="off"
+        />
+      </div>
+      <div class="table-actions">
+        <button class="btn btn-primary btn-sm" id="add-row-btn">
+          &#43; Add Row
+        </button>
+        <button class="btn btn-secondary btn-sm" id="export-btn" title="Export as CSV">
+          &#8681; Export CSV
+        </button>
+        <button class="btn btn-secondary btn-sm" id="reset-btn" title="Reset filters">
+          &#8635; Reset
+        </button>
+      </div>
+    </div>
+
+    <!-- Table wrapper -->
+    <div class="table-wrapper">
+      <table class="data-table" id="data-table">
+        <thead>
+          <tr>
+            <th data-col="name">     Name          <span class="sort-icon">&#8597;</span></th>
+            <th data-col="role">     Role           <span class="sort-icon">&#8597;</span></th>
+            <th data-col="dept">     Department     <span class="sort-icon">&#8597;</span></th>
+            <th data-col="status">   Status         <span class="sort-icon">&#8597;</span></th>
+            <th data-col="projects"> Projects       <span class="sort-icon">&#8597;</span></th>
+            <th data-col="joined">   Joined          <span class="sort-icon">&#8597;</span></th>
+          </tr>
+        </thead>
+        <tbody id="table-body">
+          <!-- Rows injected by JS -->
+        </tbody>
+      </table>
+
+      <!-- Table footer -->
+      <div class="table-footer">
+        <span id="table-count">0 records</span>
+        <span id="table-sort-info">Click a column header to sort</span>
+      </div>
+    </div>
+
+  </div><!-- /table-content -->
+
+  <!-- ── Footer ── -->
+  <footer class="footer">
+    <span class="footer-logo">NEXUS</span>
+    <span class="footer-text">// Dynamic Table Generator</span>
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="modal.html">Modal</a>
+      <a href="todo.html">Todo</a>
+    </div>
+  </footer>
+
+</div><!-- /page-wrapper -->
+
+<!-- ── Add Row Modal ── -->
+<div class="add-row-modal" id="add-row-modal">
+  <div class="modal-backdrop" id="add-row-backdrop"></div>
+  <div class="modal-box" style="max-width:480px;">
+    <div class="modal-box-header">
+      <div class="modal-icon">&#43;</div>
+      <div class="modal-title-block">
+        <h2>Add New Row</h2>
+        <p>Fill in the details to add a new team member.</p>
+      </div>
+      <button class="modal-close" id="add-row-close">&#10005;</button>
+    </div>
+    <div class="modal-body" style="display:flex;flex-direction:column;gap:.9rem;">
+      <div class="form-row">
+        <div class="form-group">
+          <label>First Name</label>
+          <input type="text" id="field-fname" class="input-field" placeholder="e.g. Alex" maxlength="30" />
+        </div>
+        <div class="form-group">
+          <label>Last Name</label>
+          <input type="text" id="field-lname" class="input-field" placeholder="e.g. Morgan" maxlength="30" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Role</label>
+          <input type="text" id="field-role" class="input-field" placeholder="e.g. Engineer" maxlength="40" />
+        </div>
+        <div class="form-group">
+          <label>Department</label>
+          <select id="field-dept" class="input-field">
+            <option value="Engineering">Engineering</option>
+            <option value="Design">Design</option>
+            <option value="Product">Product</option>
+            <option value="Marketing">Marketing</option>
+            <option value="Finance">Finance</option>
+            <option value="Operations">Operations</option>
+            <option value="HR">HR</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Status</label>
+          <select id="field-status" class="input-field">
+            <option value="active">Active</option>
+            <option value="pending">Pending</option>
+            <option value="inactive">Inactive</option>
+            <option value="review">In Review</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Projects</label>
+          <input type="number" id="field-projects" class="input-field" min="0" max="99" value="1" />
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary btn-sm" id="add-row-cancel">Cancel</button>
+      <button class="btn btn-primary btn-sm"   id="add-row-confirm">Add Row</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/table.js"></script>
+<script>
+/* ── Particles ── */
+(function(){
+  const canvas = document.getElementById('particle-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [];
+  function resize(){ W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+  window.addEventListener('resize', resize); resize();
+  const COLORS = ['rgba(0,210,255,', 'rgba(168,85,247,', 'rgba(74,247,193,'];
+  for(let i = 0; i < 70; i++){
+    particles.push({
+      x: Math.random() * 9999, y: Math.random() * 9999,
+      r: Math.random() * 1.5 + 0.3,
+      vx: (Math.random() - 0.5) * 0.18,
+      vy: (Math.random() - 0.5) * 0.18,
+      color: COLORS[Math.floor(Math.random() * COLORS.length)],
+      alpha: Math.random() * 0.6 + 0.15,
+    });
+  }
+  function draw(){
+    ctx.clearRect(0, 0, W, H);
+    particles.forEach(p => {
+      p.x += p.vx; p.y += p.vy;
+      if(p.x < 0) p.x = W; if(p.x > W) p.x = 0;
+      if(p.y < 0) p.y = H; if(p.y > H) p.y = 0;
+      ctx.beginPath();
+      ctx.arc(p.x % W, p.y % H, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = p.color + p.alpha + ')';
+      ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ── Hamburger ── */
+const hamburger = document.getElementById('hamburger');
+const navLinks  = document.getElementById('nav-links');
+hamburger.addEventListener('click', () => {
+  hamburger.classList.toggle('open');
+  navLinks.classList.toggle('open');
+});
+</script>
+</body>
+</html>
